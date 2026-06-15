@@ -1,6 +1,5 @@
 const API_URL = "http://localhost:3001/artistas";
 
-/* ================= GET ================= */
 export const obtenerArtistas = async () => {
 
   const token = localStorage.getItem("token");
@@ -14,7 +13,6 @@ export const obtenerArtistas = async () => {
   return await res.json();
 };
 
-/* ================= POST ================= */
 export const crearArtista = async (data) => {
 
   const token = localStorage.getItem("token");
@@ -31,7 +29,6 @@ export const crearArtista = async (data) => {
   return await res.json();
 };
 
-/* ================= DELETE ================= */
 export const eliminarArtista = async (id) => {
 
   const token = localStorage.getItem("token");
@@ -45,13 +42,13 @@ export const eliminarArtista = async (id) => {
 
   return await res.json();
 };
-/* ================= PUT (ACTUALIZAR) ================= */
+
 export const actualizarArtista = async (id, data) => {
 
   const token = localStorage.getItem("token");
 
   const res = await fetch(`${API_URL}/${id}`, {
-    method: "PATCH",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`

@@ -11,10 +11,6 @@ import bcrypt from 'bcryptjs';
 import { check, validationResult } from 'express-validator';
 
 
-// ======================
-// OBTENER TODOS
-// ======================
-
 export const obtUsuarios = async (req, res) => {
 
     const usuarios = await obtTodo();
@@ -22,10 +18,6 @@ export const obtUsuarios = async (req, res) => {
     res.status(200).json(usuarios);
 };
 
-
-// ======================
-// OBTENER POR ID
-// ======================
 
 export const obtUsuarioPorID = async (req, res) => {
 
@@ -35,10 +27,6 @@ export const obtUsuarioPorID = async (req, res) => {
     res.status(200).json(usuario);
 };
 
-
-// ======================
-// INSERTAR
-// ======================
 
 export const insertaUsuario = async (req, res) => {
 
@@ -81,18 +69,11 @@ export const insertaUsuario = async (req, res) => {
     res.status(201).json(usuarioNuevo);
 };
 
-
-// ======================
-// ACTUALIZAR
-// ======================
-
 export const actualizaUsuario = async (req, res) => {
 
     try {
 
         let data = { ...req.body };
-
-        // 🔐 si viene password, la hasheamos
         if (data.password) {
             data.password = await bcrypt.hash(data.password, 10);
         }
@@ -114,9 +95,6 @@ export const actualizaUsuario = async (req, res) => {
     }
 };
 
-// ======================
-// ELIMINACION LOGICA
-// ======================
 
 export const eliminaUsuario = async (req, res) => {
 

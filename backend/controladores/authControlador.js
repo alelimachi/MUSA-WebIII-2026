@@ -58,7 +58,6 @@ export const login = async (req, res) => {
 
         );
 
-        // REGISTRAR LOG DE INGRESO
         await guardarLog(
             usuario.id,
             req.ip,

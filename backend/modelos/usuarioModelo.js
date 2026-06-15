@@ -1,9 +1,5 @@
 import { pool } from '../config/bd.js';
 
-// ==========================
-// OBTENER TODOS LOS USUARIOS
-// ==========================
-
 export const obtTodo = async () => {
 
     const [resultado] = await pool.query(
@@ -12,10 +8,6 @@ export const obtTodo = async () => {
 
     return resultado;
 };
-
-// ==========================
-// OBTENER USUARIO POR ID
-// ==========================
 
 export const obtUsuario = async (id) => {
 
@@ -27,9 +19,6 @@ export const obtUsuario = async (id) => {
     return resultado[0];
 };
 
-// ==========================
-// OBTENER USUARIO POR EMAIL
-// ==========================
 
 export const obtUsuarioEmail = async (email) => {
 
@@ -41,9 +30,6 @@ export const obtUsuarioEmail = async (email) => {
     return resultado[0];
 };
 
-// ==========================
-// INSERTAR USUARIO
-// ==========================
 
 export const inserta = async (usuario) => {
 
@@ -69,9 +55,6 @@ export const inserta = async (usuario) => {
     };
 };
 
-// ==========================
-// ACTUALIZAR USUARIO
-// ==========================
 
 export const actualiza = async (id, usuario) => {
 
@@ -95,10 +78,6 @@ export const actualiza = async (id, usuario) => {
         ...usuario
     };
 };
-
-// ==========================
-// ELIMINAR USUARIO
-// ==========================
 
 export const elimina = async (id) => {
 

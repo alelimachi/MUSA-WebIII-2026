@@ -8,9 +8,6 @@ import {
 
 import { check, validationResult } from 'express-validator';
 
-/* =======================
-   OBTENER TODOS
-======================= */
 export const obtArtistas = async (req, res) => {
   try {
     const artistas = await obtTodo();
@@ -23,9 +20,6 @@ export const obtArtistas = async (req, res) => {
   }
 };
 
-/* =======================
-   OBTENER POR ID
-======================= */
 export const obtArtistaPorID = async (req, res) => {
   try {
     const artista = await obtArtista(req.params.id);
@@ -46,9 +40,6 @@ export const obtArtistaPorID = async (req, res) => {
   }
 };
 
-/* =======================
-   CREAR ARTISTA
-======================= */
 export const insertaArtista = async (req, res) => {
 
   await check('nombre')
@@ -77,9 +68,6 @@ export const insertaArtista = async (req, res) => {
   }
 };
 
-/* =======================
-   ACTUALIZAR ARTISTA
-======================= */
 export const actualizaArtista = async (req, res) => {
 
   await check('nombre')
@@ -118,9 +106,6 @@ export const actualizaArtista = async (req, res) => {
   }
 };
 
-/* =======================
-   ELIMINACIÓN LÓGICA
-======================= */
 export const eliminaArtista = async (req, res) => {
   try {
     const resultado = await elimina(req.params.id);

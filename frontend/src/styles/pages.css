@@ -71,7 +71,6 @@
 .card:hover{
   transform: translateY(-8px);
 }
-/* HERO GALERIA */
 .hero-galeria{
     padding: 80px 20px;
     text-align:center;
@@ -89,7 +88,6 @@
     box-shadow:0 15px 35px rgba(0,0,0,.3);
 }
 
-/* TITULO MUSA */
 .musa-title{
     font-size:5rem;
     font-weight:900;

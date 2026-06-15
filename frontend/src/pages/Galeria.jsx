@@ -21,8 +21,6 @@ function Galeria() {
 
   return (
     <div className="page">
-
-      {/* CARRUSEL */}
       <div
         id="carouselGaleria"
         className="carousel slide mb-5"
@@ -146,8 +144,6 @@ function Galeria() {
 
   </div>
 </div>
-
-      {/* OBRAS */}
       <div className="container">
         <div className="row">
 

@@ -3,8 +3,6 @@ import "../styles/pages.css";
 function Contacto() {
   return (
     <div className="contacto-page">
-
-      {/* HERO */}
       <div className="contacto-hero text-center">
         <h1 className="contacto-title">
           Contáctanos
@@ -18,8 +16,6 @@ function Contacto() {
 
       <div className="container mt-5">
         <div className="row g-4">
-
-          {/* FORMULARIO */}
           <div className="col-md-7">
             <div className="card shadow-lg border-0 contacto-card">
               <div className="card-body p-4">
@@ -89,8 +85,6 @@ function Contacto() {
               </div>
             </div>
           </div>
-
-          {/* INFORMACIÓN */}
           <div className="col-md-5">
             <div className="card shadow-lg border-0 contacto-info">
 

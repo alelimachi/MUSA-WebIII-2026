@@ -6,7 +6,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // CAPTCHA
+
   const [captcha] = useState({
     num1: Math.floor(Math.random() * 10) + 1,
     num2: Math.floor(Math.random() * 10) + 1,
@@ -17,7 +17,6 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    // Validar CAPTCHA
     if (
       parseInt(respuestaCaptcha) !==
       captcha.num1 + captcha.num2
@@ -104,8 +103,6 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-
-        {/* CAPTCHA */}
         <div className="mb-3">
           <label>
             CAPTCHA: {captcha.num1} + {captcha.num2} = ?

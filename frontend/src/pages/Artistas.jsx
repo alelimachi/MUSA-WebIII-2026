@@ -3,7 +3,6 @@ import ArtistaCard from "../components/ArtistaCard";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-
 import {
   obtenerArtistas,
   crearArtista,
@@ -12,107 +11,104 @@ import {
 } from "../services/artistaService";
 
 function Artistas() {
-  const usuario = JSON.parse(
-  localStorage.getItem("usuario")
-);
-
-const esAdmin = usuario?.rol === "admin";
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const esAdmin = usuario?.rol === "admin";
 
   const [artistas, setArtistas] = useState([]);
   const [estado, setEstado] = useState("");
   const [nombre, setNombre] = useState("");
+  const [nacionalidad, setNacionalidad] = useState("");
+  const [biografia, setBiografia] = useState("");
 
-  // EDIT
   const [editId, setEditId] = useState(null);
   const [editNombre, setEditNombre] = useState("");
+  const [editNacionalidad, setEditNacionalidad] = useState("");
+  const [editBiografia, setEditBiografia] = useState("");
+
   const [mostrarModal, setMostrarModal] = useState(false);
 
   useEffect(() => {
     cargarArtistas();
   }, []);
+
   const generarPDF = () => {
+    const doc = new jsPDF();
 
-  const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text("Reporte de Artistas MUSA", 14, 20);
 
-  doc.setFontSize(18);
-  doc.text("Reporte de Artistas - MUSA", 14, 20);
+    const datos = artistas.map((artista) => [
+      artista.id,
+      artista.nombre,
+      artista.nacionalidad || "No registrada",
+      artista.biografia || "Sin biografía"
+    ]);
 
-  const datos = artistas.map((artista) => [
-    artista.id,
-    artista.nombre,
-    artista.nacionalidad || "No registrada"
-  ]);
+    autoTable(doc, {
+      head: [["ID", "Nombre", "Nacionalidad", "Biografía"]],
+      body: datos,
+      startY: 30
+    });
 
-  autoTable(doc, {
-    head: [["ID", "Nombre", "Nacionalidad"]],
-    body: datos,
-    startY: 30
-  });
-
-  doc.save("reporte_artistas.pdf");
-};
+    doc.save("reporte_artistas.pdf");
+  };
 
   const cargarArtistas = async () => {
     try {
       const data = await obtenerArtistas();
-
-      console.log("DATA RECIBIDA:", data);
-      console.log("TIPO:", typeof data);
-      console.log("ES ARRAY:", Array.isArray(data));
       setArtistas(data);
-      setEstado(`✅ Conectado (${data.length} artistas)`);
+      setEstado(`Conectado (${data.length} artistas)`);
     } catch (error) {
-      setEstado("❌ Error de conexión");
+      setEstado("Error de conexión");
     }
   };
-
-  /* ================= CREAR ================= */
   const agregarArtista = async () => {
     if (!nombre) return alert("Nombre requerido");
 
-    await crearArtista({ nombre });
+    await crearArtista({
+      nombre,
+      nacionalidad,
+      biografia
+    });
 
     setNombre("");
+    setNacionalidad("");
+    setBiografia("");
+
     cargarArtistas();
   };
 
-  /* ================= ELIMINAR ================= */
   const eliminar = async (id) => {
     await eliminarArtista(id);
     cargarArtistas();
   };
-
-  /* ================= ABRIR EDIT ================= */
   const abrirEditar = (artista) => {
     setEditId(artista.id);
     setEditNombre(artista.nombre);
+    setEditNacionalidad(artista.nacionalidad || "");
+    setEditBiografia(artista.biografia || "");
     setMostrarModal(true);
   };
+  const guardarEdicion = async () => {
+    if (!editNombre) return alert("Nombre requerido");
 
-  /* ================= GUARDAR EDIT ================= */
-const guardarEdicion = async () => {
-  if (!editNombre) return alert("Nombre requerido");
+    try {
+      await actualizarArtista(editId, {
+        nombre: editNombre,
+        nacionalidad: editNacionalidad,
+        biografia: editBiografia
+      });
 
-  try {
-    const res = await actualizarArtista(editId, {
-      nombre: editNombre
-    });
-
-    console.log("RESPUESTA:", res);
-
-    setMostrarModal(false);
-    cargarArtistas();
-
-  } catch (error) {
-    console.error("ERROR COMPLETO:", error);
-    alert(error.message);
-  }
-};
+      setMostrarModal(false);
+      cargarArtistas();
+    } catch (error) {
+      console.error(error);
+      alert("Error al editar artista");
+    }
+  };
 
   return (
     <div className="artistas-page">
-
-      {/* ================= HERO ORIGINAL ================= */}
       <div className="artistas-hero text-center py-5">
 
         <h1 style={{
@@ -129,21 +125,14 @@ const guardarEdicion = async () => {
           y explora sus obras y estilos.
         </p>
 
-        <button
-          className="btn btn-warning btn-lg mt-3"
-          onClick={cargarArtistas}
-        >
+        <button className="btn btn-warning btn-lg mt-3" onClick={cargarArtistas}>
           Actualizar Artistas
         </button>
-        <button
-         className="btn btn-danger btn-lg mt-3 ms-2"
-         onClick={generarPDF}
-        >
-          Generar PDF
-      </button>
-      </div>
 
-      {/* ================= IMÁGENES (TU DISEÑO ORIGINAL) ================= */}
+        <button className="btn btn-danger btn-lg mt-3 ms-2" onClick={generarPDF}>
+          Generar PDF
+        </button>
+      </div>
       <div className="container mt-5">
 
         <div className="row text-center">
@@ -189,8 +178,6 @@ const guardarEdicion = async () => {
 
         </div>
       </div>
-
-      {/* ================= FORM CREAR ================= */}
       <div className="container mt-5 text-center">
 
         <input
@@ -200,17 +187,28 @@ const guardarEdicion = async () => {
           onChange={(e) => setNombre(e.target.value)}
           className="form-control w-50 mx-auto"
         />
-        {esAdmin && (
-        <button
-          className="btn btn-success mt-3"
-          onClick={agregarArtista}
-        >
-          Agregar Artista
-        </button>
-      )}
-      </div>
 
-      {/* ================= ESTADO ================= */}
+        <input
+          type="text"
+          placeholder="Nacionalidad"
+          value={nacionalidad}
+          onChange={(e) => setNacionalidad(e.target.value)}
+          className="form-control w-50 mx-auto mt-2"
+        />
+
+        <textarea
+          placeholder="Biografía"
+          value={biografia}
+          onChange={(e) => setBiografia(e.target.value)}
+          className="form-control w-50 mx-auto mt-2"
+        />
+
+        {esAdmin && (
+          <button className="btn btn-success mt-3" onClick={agregarArtista}>
+            Agregar Artista
+          </button>
+        )}
+      </div>
       {estado && (
         <div className="container mt-3">
           <div className="alert alert-info text-center">
@@ -218,8 +216,6 @@ const guardarEdicion = async () => {
           </div>
         </div>
       )}
-
-      {/* ================= LISTA ================= */}
       <div className="container mt-5">
 
         <h2 className="text-center mb-4"
@@ -236,25 +232,23 @@ const guardarEdicion = async () => {
 
                 <ArtistaCard artista={artista} />
 
-                {/* EDITAR */}
                 {esAdmin && (
-                  <button
-                    className="btn btn-primary mt-2 w-100"
-                    onClick={() => abrirEditar(artista)}
-                  >
-                    Editar
-                  </button>
+                  <>
+                    <button
+                      className="btn btn-primary mt-2 w-100"
+                      onClick={() => abrirEditar(artista)}
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      className="btn btn-danger mt-2 w-100"
+                      onClick={() => eliminar(artista.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </>
                 )}
-                
-                {/* ELIMINAR */}
-             {esAdmin && (
-              <button
-                className="btn btn-danger mt-2 w-100"
-                onClick={() => eliminar(artista.id)}
-              >
-                Eliminar
-              </button>
-            )}
               </div>
             ))
           ) : (
@@ -265,53 +259,57 @@ const guardarEdicion = async () => {
 
         </div>
       </div>
-
-      {/* ================= MODAL EDIT ================= */}
       {mostrarModal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            background: "rgba(0,0,0,0.7)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 9999
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              padding: "30px",
-              borderRadius: "10px",
-              width: "400px",
-              textAlign: "center"
-            }}
-          >
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "rgba(0,0,0,0.7)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 9999
+        }}>
+          <div style={{
+            background: "#fff",
+            padding: "30px",
+            borderRadius: "10px",
+            width: "400px",
+            textAlign: "center"
+          }}>
             <h3>Editar Artista</h3>
 
             <input
               type="text"
               value={editNombre}
               onChange={(e) => setEditNombre(e.target.value)}
-              className="form-control mt-3"
+              className="form-control mt-2"
+              placeholder="Nombre"
+            />
+
+            <input
+              type="text"
+              value={editNacionalidad}
+              onChange={(e) => setEditNacionalidad(e.target.value)}
+              className="form-control mt-2"
+              placeholder="Nacionalidad"
+            />
+
+            <textarea
+              value={editBiografia}
+              onChange={(e) => setEditBiografia(e.target.value)}
+              className="form-control mt-2"
+              placeholder="Biografía"
             />
 
             <div className="mt-3">
-              <button
-                className="btn btn-success me-2"
-                onClick={guardarEdicion}
-              >
+              <button className="btn btn-success me-2" onClick={guardarEdicion}>
                 Guardar
               </button>
 
-              <button
-                className="btn btn-secondary"
-                onClick={() => setMostrarModal(false)}
-              >
+              <button className="btn btn-secondary" onClick={() => setMostrarModal(false)}>
                 Cancelar
               </button>
             </div>

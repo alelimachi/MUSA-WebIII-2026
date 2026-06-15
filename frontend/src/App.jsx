@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
 import Home from "./pages/Home";
 import Galeria from "./pages/Galeria";
 import Artistas from "./pages/Artistas";
@@ -11,7 +10,6 @@ import Login from "./pages/Login";
 import Estadisticas from "./pages/Estadisticas";
 import Usuarios from "./pages/Usuarios";
 
-// 🔐 PROTECCIÓN DE RUTAS
 function RutaPrivada({ children }) {
   const token = localStorage.getItem("token");
 
@@ -24,20 +22,14 @@ function App() {
       <Navbar />
 
       <Routes>
-
-        {/* LOGIN AL INICIAR */}
         <Route
           path="/"
           element={<Navigate to="/login" />}
         />
-
-        {/* LOGIN */}
         <Route
           path="/login"
           element={<Login />}
         />
-
-        {/* HOME */}
         <Route
           path="/home"
           element={
@@ -46,8 +38,6 @@ function App() {
             </RutaPrivada>
           }
         />
-
-        {/* GALERIA */}
         <Route
           path="/galeria"
           element={
@@ -56,8 +46,6 @@ function App() {
             </RutaPrivada>
           }
         />
-
-        {/* ARTISTAS */}
         <Route
           path="/artistas"
           element={
@@ -66,8 +54,6 @@ function App() {
             </RutaPrivada>
           }
         />
-
-        {/* CONTACTO */}
         <Route
           path="/contacto"
           element={
@@ -76,8 +62,6 @@ function App() {
             </RutaPrivada>
           }
         />
-
-        {/* ESTADISTICAS */}
         <Route
           path="/estadisticas"
           element={
@@ -86,8 +70,6 @@ function App() {
             </RutaPrivada>
           }
         />
-
-        {/* USUARIOS */}
         <Route
           path="/usuarios"
           element={
@@ -96,15 +78,11 @@ function App() {
             </RutaPrivada>
           }
         />
-
-        {/* SI LA RUTA NO EXISTE */}
         <Route
           path="*"
           element={<Navigate to="/login" />}
         />
-
       </Routes>
-
       <Footer />
     </BrowserRouter>
   );

@@ -24,7 +24,6 @@ function Navbar() {
   window.location.href = "/login";
 };
 
-  // Ocultar navbar en login
   if (location.pathname === "/login") {
     return null;
   }

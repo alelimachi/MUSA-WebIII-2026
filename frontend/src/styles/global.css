@@ -1,6 +1,4 @@
-/* ================================= */
-/* HERO */
-/* ================================= */
+
 body{
   background-image:
   linear-gradient(
@@ -138,9 +136,6 @@ body{
   margin: 20px 0;
 }
 
-/* ================================= */
-/* NAVBAR */
-/* ================================= */
 .navbar {
   background-image: url("/Portada.jpeg");
   background-size: cover;
@@ -201,10 +196,6 @@ body{
   color: #ffc107 !important;
 }
 
-/* ================================= */
-/* CARDS */
-/* ================================= */
-
 .artista-card,
 .card {
   border: none;
@@ -227,10 +218,6 @@ body{
   height: 250px;
   object-fit: cover;
 }
-
-/* ================================= */
-/* GRID */
-/* ================================= */
 
 .grid {
   display: grid;
@@ -294,9 +281,6 @@ body {
   color: #5c4033;
 }
 
-/* ================================= */
-/* FOOTER */
-/* ================================= */
 
 .footer {
   background: #222;
@@ -307,9 +291,7 @@ body {
 
   padding: 30px;
 }
-/* ==========================
-   PAGINA ARTISTAS
-========================== */
+
 
 .artistas-page{
   min-height:100vh;
@@ -349,7 +331,6 @@ body {
   line-height:1.8;
 }
 
-/* ESTADISTICAS */
 
 .stats-box{
   background:white;
